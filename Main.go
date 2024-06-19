@@ -68,9 +68,7 @@ func main() {
 	log.Println("End at" + (time.Now().String()))
 	executionMin := time.Now().Sub(StartTime)
 	fmt.Println("execution times ", executionMin)
-	//InsertToTable(db)
 
-	//log.Printf("Connected!\n")
 	defer db.Close()
 }
 
@@ -130,21 +128,12 @@ func InsertToTable(db *sql.DB, columns StructureTable) bool {
 		return false
 	}
 
-	// var version, ss, dd string
-	// var vv *string
-
-	// err = db.QueryRowContext(ctx, "select * from SkipAcctNo").Scan(&version, &ss, &dd, &vv)
-	// if err != nil {
-	// 	log.Fatal("Scan failed:", err.Error())
-	// }
-
 	_, sqlerr := db.ExecContext(ctx, `insert into `+os.Getenv("TabletoInsert")+` values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, columns.Company, columns.RC, columns.OC, columns.Channel, columns.ProductCode, columns.DrCr, columns.GLAccountNo, columns.GLAccountName, columns.Activity, columns.Tax, columns.InterCo, columns.Future1, columns.Future2, columns.Currency, columns.AmountEnteredDebit, columns.AmountEnteredCredit, columns.LoanAccountNumber, columns.GroupReferenceNumber, columns.OriginalTransactionReferenceNumber, columns.TransactionReferenceNumber, columns.GLGroupCodeCoA, columns.TransactionPostingDate, columns.EffectiveDate, columns.JournalEntryDescription)
 	if sqlerr != nil {
 		log.Fatal(sqlerr.Error())
 		return false
 	}
 	return true
-	//log.Printf("%s\n", version)
 }
 
 func File2lines(filePath string) ([]string, error) {
