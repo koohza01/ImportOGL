@@ -50,6 +50,8 @@ type StructureTable struct {
 }
 
 func main() {
+	StartTime := time.Now()
+	log.Println("Start at " + (StartTime.String()))
 	godotenv.Load()
 	server = os.Getenv("EnvServer")
 	port = os.Getenv("EnvUser")
@@ -57,14 +59,17 @@ func main() {
 	password = os.Getenv("EnvPort")
 	database = os.Getenv("EnvDatabase")
 	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%s;database=%s", server, user, password, port, database)
-
+	startRowW := os.Getenv("startRow")
+	startRow,errs := strconv.Atoi(startRowW)
+	if errs != nil {
+		log.Fatal("convert start row error", errs.Error())
+	}
 	db, err := sql.Open("mssql", connString)
 	if err != nil {
 		log.Fatal("Open connection failed:", err.Error())
 	}
-	StartTime := time.Now()
-	log.Println("Start at " + (StartTime.String()))
-	InsertToSql(os.Getenv("PathFile"), 5, db)
+
+	InsertToSql(os.Getenv("PathFile"), startRow, db)
 	log.Println("End at" + (time.Now().String()))
 	executionMin := time.Now().Sub(StartTime)
 	fmt.Println("execution times ", executionMin)
@@ -80,7 +85,7 @@ func InsertToSql(path string, startRow int, db *sql.DB) error {
 
 	//fileContent := ""
 
-	for i, line := range lines {
+	for i, line := range lines[startRow:] {
 		columns := StructureTable{}
 		columns.Company = strings.TrimSpace(string(line[0:10]))
 		columns.RC = strings.TrimSpace(string(line[10:20]))
@@ -96,8 +101,8 @@ func InsertToSql(path string, startRow int, db *sql.DB) error {
 		columns.Future1 = strings.TrimSpace(string(line[170:180]))
 		columns.Future2 = strings.TrimSpace(string(line[180:190]))
 		columns.Currency = strings.TrimSpace(string(line[180:199]))
-		columns.AmountEnteredDebit = strings.TrimSpace(string(line[199:224]))
-		columns.AmountEnteredCredit = strings.TrimSpace(string(line[224:249]))
+		columns.AmountEnteredDebit = strings.ReplaceAll(strings.TrimSpace(string(line[199:224])),",","")
+		columns.AmountEnteredCredit = strings.ReplaceAll(strings.TrimSpace(string(line[224:249])),",","")
 		columns.LoanAccountNumber = strings.TrimSpace(string(line[249:275]))
 		columns.GroupReferenceNumber = strings.TrimSpace(string(line[275:305]))
 		columns.OriginalTransactionReferenceNumber = strings.TrimSpace(string(line[305:345]))

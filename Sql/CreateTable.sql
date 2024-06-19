@@ -1,14 +1,14 @@
 USE [ImportDataMobius]
 GO
 
-/****** Object:  Table [dbo].[CheckOGL]    Script Date: 19/06/2024 18:12:49 ******/
+/****** Object:  Table [dbo].[ReportOGL]    Script Date: 19/06/2024 8:31:08 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[CheckOGL](
+CREATE TABLE [dbo].[ReportOGL](
 	[Company] [nvarchar](max) NULL,
 	[RC] [nvarchar](max) NULL,
 	[OC] [nvarchar](max) NULL,
@@ -23,8 +23,8 @@ CREATE TABLE [dbo].[CheckOGL](
 	[Future1] [nvarchar](max) NULL,
 	[Future2] [nvarchar](max) NULL,
 	[Currency] [nvarchar](max) NULL,
-	[AmountEnteredDebit] [nvarchar](max) NULL,
-	[AmountEnteredCredit] [nvarchar](max) NULL,
+	[AmountEnteredDebit] [decimal](18, 2) NULL,
+	[AmountEnteredCredit] [decimal](18, 2) NULL,
 	[LoanAccountNumber] [nvarchar](max) NULL,
 	[GroupReferenceNumber] [nvarchar](max) NULL,
 	[OriginalTransactionReferenceNumber] [nvarchar](max) NULL,
