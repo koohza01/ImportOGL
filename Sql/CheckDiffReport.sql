@@ -7,6 +7,6 @@ select SUM(amtcredit) as amtcredit,SUM(amtdebit) as amtdebit from(select Transac
 from ReportOGL group by TransactionReferenceNumber
 having Sum(AmountEnteredCredit) <> Sum(AmountEnteredDebit)) sss
 
-select Sum(AmountEnteredDebit),Sum(AmountEnteredDebit),  Sum(AmountEnteredDebit) - Sum(AmountEnteredCredit)
+select Sum(AmountEnteredDebit) as amtdebit,Sum(AmountEnteredCredit) as amtcredit,  Sum(AmountEnteredDebit) - Sum(AmountEnteredCredit) as diff
 from ReportOGL 
 
